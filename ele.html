@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ele</title>
+  <style>
+    *{
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    .elebox{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50px;
+    }
+
+    .eleInput,.output{
+      width: 80%;  
+    }
+    textarea{
+      min-width: 100%;
+      max-width: 100%;
+    }
+    button{
+      margin: 50px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="elebox">
+    <div class="eleInput">
+       <textarea placeholder="请输入..." rows="10" id="inputText"></textarea>
+    </div>
+    <button id="btn">格式转化</button>
+    <div class="output">
+      <textarea disabled rows="10" id="outputText"></textarea>
+    </div>
+  </div>
+
+
+
+  <script>
+    /**
+     * 目标格式:unb=xxx;cookie2=xxx;USERID=xx;SID=xxx;wxUid=xx(可不要);
+    */
+   const btn  = document.getElementById('btn');
+   const inputText = document.getElementById('inputText');
+    function dataConversion(dataParams){
+      let str ='';
+      const regUNB = /unb=(.*?);/g;
+      const regCookie2 = /cookie2=(.*?);/;
+      const regUSERID = /USERID=(.*?);/;
+      const regSID = /SID=(.*?);/;
+
+      if(regUNB.test(dataParams) && regCookie2.test(dataParams) && regUSERID.test(dataParams) && regSID.test(dataParams)){
+          const UNB = dataParams.match(regUNB)[0];
+          const cookie2 = dataParams.match(regCookie2)[0];
+          const USERID = dataParams.match(regUSERID)[0];
+          const SID = dataParams.match(regSID)[0];
+          str = UNB  + cookie2  + USERID + SID;
+          const outputText = document.getElementById('outputText');
+          outputText.value = str;
+      }else{
+        alert('数据有误');
+      }
+    }
+    btn.onclick = () => {
+      dataConversion(inputText.value);
+    }
+
+  </script>
+</body>
+</html>
